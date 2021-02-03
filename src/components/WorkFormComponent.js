@@ -14,7 +14,7 @@ const WorkFormComponent = ({ onChange, handleRemove, index, data }) => {
   } = data;
 
   return (
-    <div class="my-3">
+    <div className="my-3">
       <h4 className="mb-2 text-center">
         {data.company && data.position
           ? `${data.position} at ${data.company}`
@@ -95,7 +95,7 @@ const WorkFormComponent = ({ onChange, handleRemove, index, data }) => {
           Remove
         </Button>
       </div>
-      <hr/>
+      <hr />
     </div>
   );
 };
