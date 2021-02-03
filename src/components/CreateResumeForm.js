@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Col, Alert } from "react-bootstrap";
 import _ from "lodash";
+import EducationFormComponent from "./EducationFormComponent"
 import VolunteerFormComponent from "./VolunteerFormComponent";
 import WorkFormComponent from "./WorkFormComponent";
 
@@ -24,7 +25,8 @@ const CreateResumeForm = () => {
       profiles: [],
     },
     work: [],
-    volunteer: []
+    volunteer: [],
+    education: [],
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -85,7 +87,7 @@ const CreateResumeForm = () => {
 
   const handleAddVolunteering = () => {
     formData.volunteer = _.concat(formData.volunteer, {
-      company: "",
+      organization: "",
       position: "",
       website: "",
       startDate: "",
@@ -99,16 +101,32 @@ const CreateResumeForm = () => {
     });
   };
 
-   const handleRemoveVolunteering = (idx) => {
-     formData.volunteer = _.concat(
-       _.slice(formData.volunteer, 0, idx),
-       _.slice(formData.volunteer, idx + 1)
-     );
-     setFormData({
-       ...formData,
-       volunteer: formData.volunteer,
-     });
-   };
+  const handleRemoveVolunteering = (idx) => {
+    formData.volunteer = _.concat(
+      _.slice(formData.volunteer, 0, idx),
+      _.slice(formData.volunteer, idx + 1)
+    );
+    setFormData({
+      ...formData,
+      volunteer: formData.volunteer,
+    });
+  };
+
+  const handleAddEducation = () => {
+    formData.education = _.concat(formData.education, {
+      institution: "",
+      area: "",
+      studyType: "",
+      startDate: "",
+      endDate: "",
+      gpa: 3,
+      courses: "",
+    });
+    setFormData({
+      ...formData,
+      education: formData.education,
+    });
+  };
 
   return (
     <>
@@ -232,33 +250,45 @@ const CreateResumeForm = () => {
             </Form.Row>
             <h3 className="mt-4">Work Details</h3>
             {formData.work.map((w, idx) => (
-              <>
+              <div key={idx}>
                 <WorkFormComponent
-                  key={idx}
                   index={idx}
                   data={w}
                   onChange={updateWorkData}
                   handleRemove={handleRemoveWork}
                 />
-              </>
+              </div>
             ))}
             <Button variant="outline-primary" onClick={handleAddWork}>
               Add Work
             </Button>
             <h3 className="mt-4">Volunteering Details</h3>
             {formData.volunteer.map((v, idx) => (
-              <>
+              <div key={idx}>
                 <VolunteerFormComponent
-                  key={idx}
                   index={idx}
                   data={v}
                   onChange={updateVolunteeringData}
                   handleRemove={handleRemoveVolunteering}
                 />
-              </>
+              </div>
             ))}
             <Button variant="outline-primary" onClick={handleAddVolunteering}>
               Add Volunteering
+            </Button>
+            <h3 className="mt-4">Education Details</h3>
+            {formData.education.map((ed, idx) => (
+              <div key={idx}>
+                <EducationFormComponent
+                  index={idx}
+                  data={ed}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+              </div>
+            ))}
+            <Button variant="outline-primary" onClick={handleAddEducation}>
+              Add Education
             </Button>
           </Form>
         </Card.Body>

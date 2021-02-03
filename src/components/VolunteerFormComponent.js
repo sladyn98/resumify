@@ -14,7 +14,7 @@ const VolunteerFormComponent = ({ onChange, handleRemove, index, data }) => {
   } = data;
 
   return (
-    <div class="my-3">
+    <div className="my-3">
       <h4 className="mb-2 text-center">
         {data.organization && data.position
           ? `${data.position} at ${data.organization}`
@@ -112,7 +112,7 @@ VolunteerFormComponent.propTypes = {
     highlights: PropTypes.string,
   }),
   onChange: PropTypes.func,
-  handleRemove: PropTypes.func
+  handleRemove: PropTypes.func,
 };
 
 export default VolunteerFormComponent;
