@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Col, Alert } from "react-bootstrap";
 import _ from "lodash";
-import EducationFormComponent from "./EducationFormComponent"
+import AwardFormComponent from "./AwardFormComponent";
+import EducationFormComponent from "./EducationFormComponent";
+import LanguageFormComponent from "./LanguageFormComponent";
+import PublicationFormComponent from "./PublicationFormComponent";
+import ReferenceFormComponent from "./ReferenceFormComponent";
+import SkillFormComponent from "./SkillFormComponent";
 import VolunteerFormComponent from "./VolunteerFormComponent";
 import WorkFormComponent from "./WorkFormComponent";
 
@@ -27,6 +32,11 @@ const CreateResumeForm = () => {
     work: [],
     volunteer: [],
     education: [],
+    awards: [],
+    skills: [],
+    languages: [],
+    publications: [],
+    references: []
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -128,6 +138,67 @@ const CreateResumeForm = () => {
     });
   };
 
+  const handleAddAward = () => {
+    formData.awards = _.concat(formData.awards, {
+      title: "",
+      date: "",
+      awarder: "",
+      summary: "",
+    });
+    setFormData({
+      ...formData,
+      awards: formData.awards,
+    });
+  };
+
+  const handleAddSkill = () => {
+    formData.skills = _.concat(formData.skills, {
+      name: "",
+      level: "",
+      keywords: "",
+    });
+    setFormData({
+      ...formData,
+      skills: formData.skills,
+    });
+  };
+
+  const handleAddLanguage = () => {
+    formData.languages = _.concat(formData.languages, {
+      language: "",
+      fluency: "",
+    });
+    setFormData({
+      ...formData,
+      languages: formData.languages,
+    });
+  };
+
+  const handleAddPublication = () => {
+    formData.publications = _.concat(formData.publications, {
+      name: "",
+      publisher: "",
+      website: "",
+      releaseDate: "",
+      summary: "",
+    });
+    setFormData({
+      ...formData,
+      publications: formData.publications,
+    });
+  };
+
+  const handleAddReference = () => {
+    formData.references = _.concat(formData.references, {
+      name: "",
+      reference: ""
+    });
+    setFormData({
+      ...formData,
+      references: formData.references,
+    });
+  };
+
   return (
     <>
       <Card>
@@ -162,7 +233,7 @@ const CreateResumeForm = () => {
               <Form.Control
                 type="email"
                 name="email"
-                value={formData.basics.label}
+                value={formData.basics.email}
                 onChange={(e) => updateFormData("basics.email", e.target.value)}
                 placeholder="e.g. johndoe@example.com"
                 required
@@ -289,6 +360,76 @@ const CreateResumeForm = () => {
             ))}
             <Button variant="outline-primary" onClick={handleAddEducation}>
               Add Education
+            </Button>
+            <h3 className="mt-4">Awards Earned</h3>
+            {formData.awards.map((aw, idx) => (
+              <div key={idx}>
+                <AwardFormComponent
+                  index={idx}
+                  data={aw}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+              </div>
+            ))}
+            <Button variant="outline-primary" onClick={handleAddAward}>
+              Add Award
+            </Button>
+            <h3 className="mt-4">Publications</h3>
+            {formData.publications.map((pb, idx) => (
+              <div key={idx}>
+                <PublicationFormComponent
+                  index={idx}
+                  data={pb}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+              </div>
+            ))}
+            <Button variant="outline-primary" onClick={handleAddPublication}>
+              Add Publication
+            </Button>
+            <h3 className="mt-4">Skills</h3>
+            {formData.skills.map((sk, idx) => (
+              <div key={idx}>
+                <SkillFormComponent
+                  index={idx}
+                  data={sk}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+              </div>
+            ))}
+            <Button variant="outline-primary" onClick={handleAddSkill}>
+              Add Skill
+            </Button>
+            <h3 className="mt-4">Languages</h3>
+            {formData.languages.map((sk, idx) => (
+              <div key={idx}>
+                <LanguageFormComponent
+                  index={idx}
+                  data={sk}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+              </div>
+            ))}
+            <Button variant="outline-primary" onClick={handleAddLanguage}>
+              Add Language
+            </Button>
+            <h3 className="mt-4">References</h3>
+            {formData.references.map((rf, idx) => (
+              <div key={idx}>
+                <ReferenceFormComponent
+                  index={idx}
+                  data={rf}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+              </div>
+            ))}
+            <Button variant="outline-primary" onClick={handleAddReference}>
+              Add Reference
             </Button>
           </Form>
         </Card.Body>
