@@ -1,44 +1,18 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Col, Alert } from "react-bootstrap";
 import _ from "lodash";
+import initialFormData from "./data/resume";
 import AwardFormComponent from "./AwardFormComponent";
 import EducationFormComponent from "./EducationFormComponent";
 import LanguageFormComponent from "./LanguageFormComponent";
 import PublicationFormComponent from "./PublicationFormComponent";
 import ReferenceFormComponent from "./ReferenceFormComponent";
 import SkillFormComponent from "./SkillFormComponent";
+import ThemeFormComponent from "./ThemeFormComponent";
 import VolunteerFormComponent from "./VolunteerFormComponent";
 import WorkFormComponent from "./WorkFormComponent";
 
 const CreateResumeForm = () => {
-  const initialFormData = {
-    basics: {
-      name: "",
-      label: "",
-      picture: "",
-      email: "",
-      phone: "",
-      website: "",
-      summary: "",
-      location: {
-        address: "",
-        postalCode: "",
-        city: "",
-        countryCode: "",
-        region: "",
-      },
-      profiles: [],
-    },
-    work: [],
-    volunteer: [],
-    education: [],
-    awards: [],
-    skills: [],
-    languages: [],
-    publications: [],
-    references: []
-  };
-
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState(``);
 
@@ -191,12 +165,16 @@ const CreateResumeForm = () => {
   const handleAddReference = () => {
     formData.references = _.concat(formData.references, {
       name: "",
-      reference: ""
+      reference: "",
     });
     setFormData({
       ...formData,
       references: formData.references,
     });
+  };
+
+  const handleGenerateResume = () => {
+    console.log(JSON.stringify(formData));
   };
 
   return (
@@ -431,6 +409,12 @@ const CreateResumeForm = () => {
             <Button variant="outline-primary" onClick={handleAddReference}>
               Add Reference
             </Button>
+            <ThemeFormComponent formData={formData} setFormData={setFormData} />
+            <div className="text-center">
+              <Button variant="dark" onClick={handleGenerateResume}>
+                Generate
+              </Button>
+            </div>
           </Form>
         </Card.Body>
       </Card>

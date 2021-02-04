@@ -1,0 +1,97 @@
+type Basic {
+  name: String!
+  label: String!
+  email: String!
+  phone: String!
+  website: String
+  summary: String!
+  location: Location!
+}
+
+type Location {
+  address: String!
+  city: String!
+  region: String!
+  postalCode: String!
+  countryCode: String!
+}
+
+type Work {
+  company: String!
+  position: String!
+  website: String
+  startDate: String!
+  endDate: String
+  summary: String!
+  highlights: [String!]
+}
+
+type Volunteer {
+  organization: String!
+  position: String!
+  website: String
+  startDate: String!
+  endDate: String
+  summary: String!
+  highlights: [String!]
+}
+
+type Education {
+  institution: String!
+  area: String!
+  studyType: String!
+  startDate: String!
+  endDate: String
+  gpa: String!
+  courses: [String!]
+}
+
+type Language {
+  language: String!
+  fluency: String!
+}
+
+type Skill {
+  name: String!
+  level: String!
+  keywords: [String!]
+}
+
+type Award {
+  title: String!
+  date: String!
+  awarder: String!
+  summary: String!
+}
+
+type Publication {
+  name: String!
+  publisher: String!
+  website: String
+  releaseDate: String
+  summary: String!
+}
+
+type Reference {
+  name: String!
+  reference: String!
+}
+
+type Meta {
+  username: String!
+  theme: String!
+}
+
+type Resume @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  basics: Basic!
+  work: [Work!]
+  education: [Education!]
+  volunteer: [Volunteer!]
+  languages: [Language!]
+  skills: [Skill!]
+  awards: [Award!]
+  publications: [Publication!]
+  references: [Reference!]
+  meta: Meta!
+}
