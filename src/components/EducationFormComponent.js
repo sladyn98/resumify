@@ -19,7 +19,6 @@ const EducationFormComponent = ({ index, data, formData, setFormData }) => {
       ...formData.education[idx],
       [fieldName]: value,
     };
-    console.log(formData);
     setFormData({
       ..._.set(formData, "education", formData.education),
     });

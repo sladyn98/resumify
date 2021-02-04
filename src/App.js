@@ -1,11 +1,15 @@
 import { Container } from "react-bootstrap";
 import CreateResumeForm from "./components/CreateResumeForm";
+import NavbarComponent from "./components/Navbar";
 
 const App = () => {
   return (
-    <Container>
-      <CreateResumeForm />
-    </Container>
+    <>
+      <NavbarComponent />
+      <Container>
+        <CreateResumeForm />
+      </Container>
+    </>
   );
 };
 
