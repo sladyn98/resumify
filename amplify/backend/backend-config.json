@@ -1,1 +1,9 @@
-{}
+{
+  "function": {
+    "resumifylayer": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
+    }
+  }
+}
