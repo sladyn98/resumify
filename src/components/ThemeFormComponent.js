@@ -2,14 +2,20 @@ import React from "react";
 import { Form } from "react-bootstrap";
 
 const themes = [
-  "classy",
   "apage",
+  "class",
+  "classy",
+  "elegant",
   "eloquent",
   "even",
   "flat",
   "kendall",
+  "macchiato",
   "modern",
   "paper",
+  "short",
+  "spartan",
+  "stackoverflow"
 ];
 
 const ThemeFormComponent = ({ formData, setFormData }) => {
