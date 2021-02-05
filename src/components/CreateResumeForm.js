@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import Amplify, { Auth, API, graphqlOperation } from "aws-amplify";
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Card, Col, Alert } from "react-bootstrap";
-import _ from "lodash";
+import _, { create } from "lodash";
 import initialFormData from "./data/resume";
 import AwardFormComponent from "./AwardFormComponent";
 import EducationFormComponent from "./EducationFormComponent";
@@ -12,16 +14,65 @@ import ThemeFormComponent from "./ThemeFormComponent";
 import VolunteerFormComponent from "./VolunteerFormComponent";
 import WorkFormComponent from "./WorkFormComponent";
 
+import { listResumes } from "../graphql/queries";
+import { createResume, updateResume } from "../graphql/mutation";
+
 const CreateResumeForm = () => {
   const [formData, setFormData] = useState(initialFormData);
+  const [meta, setMeta] = useState({});
   const [error, setError] = useState(``);
 
+  useEffect(() => {
+    fetchResume();
+  }, []);
+
+  const fetchResume = async () => {
+    // Get username of the current authenticated user
+    const { username } = await Auth.currentAuthenticatedUser();
+
+    // Fetch existing resume data for current authenticated user
+    const resumeData = await API.graphql(graphqlOperation(listResumes), {
+      filter: { username },
+      limit: 1,
+    });
+
+    // If it exists, use that data for initial form else use the default initial value
+    if (resumeData.data.listResumes.items.length) {
+      const {
+        id,
+        createdAt,
+        updatedAt,
+        owner,
+        ...rest
+      } = resumeData.data.listResumes.items[0];
+      setFormData(rest);
+      // Set the metadata
+      setMeta({
+        id,
+        createdAt,
+        updatedAt,
+        owner,
+      });
+    }
+  };
+
+  /**
+   *
+   * @param {String} objectPath Path to the nested object key
+   * @param {String} value New Value
+   */
   const updateFormData = (objectPath, value) => {
     setFormData({
       ..._.set(formData, objectPath, value),
     });
   };
 
+  /**
+   *
+   * @param {Number} idx Index # of the work
+   * @param {String} fieldName Name of the field
+   * @param {String} value New value for the field
+   */
   const updateWorkData = (idx, fieldName, value) => {
     formData.work[idx] = {
       ...formData.work[idx],
@@ -59,6 +110,12 @@ const CreateResumeForm = () => {
     });
   };
 
+  /**
+   *
+   * @param {Number} idx Index #
+   * @param {String} fieldName Name of the field
+   * @param {String} value New value for the field
+   */
   const updateVolunteeringData = (idx, fieldName, value) => {
     formData.volunteer[idx] = {
       ...formData.volunteer[idx],
@@ -174,7 +231,30 @@ const CreateResumeForm = () => {
   };
 
   const handleGenerateResume = () => {
+    // TODO Call rest api to fetch resume pdf
     console.log(JSON.stringify(formData));
+  };
+
+  const handleSaveResume = async () => {
+    // If resume is previously generated,
+    // just update it
+    if (setMeta?.id) {
+      await API.graphql(
+        graphqlOperation(updateResume, {
+          input: formData,
+          condition: {
+            id: setMeta.id,
+          },
+        })
+      );
+    } else {
+      // Else create a new resume for the current user
+      await API.graphql(
+        graphqlOperation(createResume, {
+          input: formData,
+        })
+      );
+    }
   };
 
   return (
@@ -411,6 +491,10 @@ const CreateResumeForm = () => {
             </Button>
             <ThemeFormComponent formData={formData} setFormData={setFormData} />
             <div className="text-center">
+              <Button variant="info" onClick={handleSaveResume}>
+                Save
+              </Button>
+              {` `}
               <Button variant="dark" onClick={handleGenerateResume}>
                 Generate
               </Button>
@@ -422,4 +506,4 @@ const CreateResumeForm = () => {
   );
 };
 
-export default CreateResumeForm;
+export default withAuthenticator(CreateResumeForm);
