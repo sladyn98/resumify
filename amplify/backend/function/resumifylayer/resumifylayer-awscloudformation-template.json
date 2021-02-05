@@ -60,7 +60,16 @@
       "Properties": {
         "Action": "lambda:GetLayerVersion",
         "LayerVersionArn": {
-          "Ref": "LambdaLayer"
+          "Fn::Sub": [
+            "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}-${env}:${layerVersion}",
+            {
+              "layerName": "resumifylayer",
+              "env": {
+                "Ref": "env"
+              },
+              "layerVersion": "1"
+            }
+          ]
         },
         "Principal": {
           "Ref": "AWS::AccountId"
@@ -68,6 +77,37 @@
       }
     },
     "LambdaLayerPermissionawsAccounts6449346719251": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": {
+          "Fn::Sub": [
+            "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}-${env}:${layerVersion}",
+            {
+              "layerName": "resumifylayer",
+              "env": {
+                "Ref": "env"
+              },
+              "layerVersion": "1"
+            }
+          ]
+        },
+        "Principal": "644934671925"
+      }
+    },
+    "LambdaLayerPermissionprivate2": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": {
+          "Ref": "LambdaLayer"
+        },
+        "Principal": {
+          "Ref": "AWS::AccountId"
+        }
+      }
+    },
+    "LambdaLayerPermissionawsAccounts6449346719252": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
